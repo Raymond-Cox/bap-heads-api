@@ -69,10 +69,11 @@ class CollLogAPI {
 
         // Filter out any items that have a quantity greater than 1
         // and are older than 1 week.
-        const recentUniques = recentDrops.filter(({ quantity, obtainedAt }) => {
-          const weekAgo = dayjs().subtract(7, 'day')
-          return quantity === 1 && dayjs(obtainedAt).isSameOrAfter(weekAgo)
-        })
+        const recentUniques =
+          recentDrops?.filter(({ quantity, obtainedAt }) => {
+            const weekAgo = dayjs().subtract(7, 'day')
+            return quantity === 1 && dayjs(obtainedAt).isSameOrAfter(weekAgo)
+          }) || []
 
         return { ...d, recentDrops: recentUniques }
       })
