@@ -4,79 +4,14 @@ import isSameOrAfter from 'dayjs/plugin/isSameOrAfter.js'
 
 dayjs.extend(isSameOrAfter)
 
-const users = [
-  'Nam',
-  'Maccaroni',
-  'Kurum',
-  //   'The 0verman',
-  //   'Wraggy',
-  //   'Saint Drogo',
-  //   'Cody M',
-  //   'Zars',
-  //   'I M Maarten',
-  //   'Iron Liche',
-  //   'Sir Iron 4 U',
-  //   '50 Traits',
-  //   'Pr3y',
-  //   'Kep',
-  //   'Drillbears',
-  //   'Avusten',
-  //   'Torima',
-  //   'AlwaysSunny',
-  //   'H5rion',
-  //   'mini kalc',
-  //   'Tashikan',
-  //   'hornplzzzzzz',
-  //   'R J G',
-  //   'Cubecrawler',
-  //   'Podiacus',
-  //   'PipPipDiddly',
-  //   'GIM Retro S',
-  //   'Iron Speesh',
-  //   'RogueLegends',
-  //   'Iron Hatred',
-  //   'skadyyyy',
-  //   'Pi Guy',
-  //   'Mastiga',
-  //   'whitefang465',
-  //   'CG IS TRASH',
-  //   'Tarded Donk',
-  //   'Preau',
-  //   'IM Silo',
-  //   'Whipyyy',
-  //   'IronFiddler',
-  //   'Pet Rex Flex',
-  //   'Jorkin it',
-  //   'Im Furyous',
-  //   'I m Aerith',
-  //   'NotArnr',
-  //   'V1dd',
-  //   'Vngdx',
-  //   'kerry catona',
-  //   'I M Cloud',
-  //   'kciem',
-  //   '70O0',
-  //   'GIMudkip',
-  //   'SSrilin',
-  //   'SkratchGyatt',
-  //   '4t 0z',
-  //   'Bing Dog',
-  //   'Hooters Girl',
-  //   'IM Anth0ny',
-  //   'Derpologyy',
-  //   'Istralore',
-  //   'CatalystRZ',
-  //   'Hap Wat',
-  //   'Clowie',
-  //   'hdra',
-  //   'Grand Muffin',
-  //   '1 Def Rusty',
-  //   'DikzakNo51',
-]
-
 class CollLogAPI {
-  constructor() {
+  /**
+   * Creates an instance of CollLogAPI.
+   * @param {string[]} users usernames
+   */
+  constructor(users) {
     this.url = 'https://api.collectionlog.net'
+    this.users = users
   }
 
   /**
@@ -120,7 +55,7 @@ class CollLogAPI {
    * @returns {Promise<import('./api').BaseCollection[]>}
    */
   async fetchAllScores() {
-    const promises = users.map(async (user) => this.getLogByUsername(user))
+    const promises = this.users.map(async (user) => this.getLogByUsername(user))
 
     const data = await Promise.all(promises)
 
@@ -169,4 +104,4 @@ class CollLogAPI {
   }
 }
 
-export default new CollLogAPI()
+export default CollLogAPI
