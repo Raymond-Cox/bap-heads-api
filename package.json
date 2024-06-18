@@ -1,0 +1,44 @@
+{
+  "name": "bap-heads-api",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "API for fetching data for Bap Heads OSRS clan",
+  "main": "index.js",
+  "scripts": {
+    "lint:check": "eslint .",
+    "lint:fix": "eslint --fix .",
+    "test": "jest --passWithNoTests",
+    "prettier:check": "prettier --check .",
+    "prettier:fix": "prettier --write .",
+    "prepare": "husky",
+    "verify": "npm run lint:check && npm run prettier:check && npm run test"
+  },
+  "keywords": [
+    "OSRS",
+    "Node",
+    "Mongo"
+  ],
+  "author": "Raymond-Cox",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Raymond-Cox/bap-heads-api.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Raymond-Cox/bap-heads-api/issues"
+  },
+  "homepage": "https://github.com/Raymond-Cox/bap-heads-api#readme",
+  "dependencies": {
+    "express": "^4.19.2"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.5.0",
+    "@jest/globals": "^29.7.0",
+    "eslint": "^9.5.0",
+    "eslint-config-prettier": "^9.1.0",
+    "globals": "^15.6.0",
+    "husky": "^9.0.11",
+    "jest": "^29.7.0",
+    "prettier": "3.3.2"
+  }
+}
