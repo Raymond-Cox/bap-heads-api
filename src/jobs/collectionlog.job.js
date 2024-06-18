@@ -12,7 +12,6 @@ export const cacheCollLogs = async () => {
     // I need to chunk the members array into smaller arrays of 10
     // to avoid hitting the API rate limit
     // Add a 5 second delay between each chunk to avoid rate limiting
-
     const chunkSize = 10
     const chunkedMembers = Array.from(
       { length: Math.ceil(members.length / chunkSize) },
@@ -22,6 +21,7 @@ export const cacheCollLogs = async () => {
       }
     )
 
+    // Fetch collection logs for each chunk
     const promises = chunkedMembers.map(async (chunk, index) => {
       if (index !== 0) {
         await new Promise((resolve) => setTimeout(resolve, 5000 * index))
