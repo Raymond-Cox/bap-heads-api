@@ -7,7 +7,7 @@ import { chunkedGetClogs } from '../utils/utils.js'
 export const cacheCollLogs = async () => {
   console.log('[CRON] Caching collection logs')
   try {
-    const members = await User.find({}, ['username'], { limit: 10 })
+    const members = await User.find({}, ['username'])
     const memberNames = members.map(({ username }) => username)
 
     const results = await chunkedGetClogs(memberNames)
