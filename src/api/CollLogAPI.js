@@ -1,9 +1,8 @@
 import axios from 'axios'
-import dayjs from 'dayjs'
-import isSameOrAfter from 'dayjs/plugin/isSameOrAfter.js'
 
-dayjs.extend(isSameOrAfter)
-
+/**
+ * https://docs.collectionlog.net/#documentationgetting_started
+ */
 class CollLogAPI {
   /**
    * Creates an instance of CollLogAPI.
@@ -17,7 +16,7 @@ class CollLogAPI {
   /**
    * Fetches log data by username.
    * @param {string} username
-   * @returns {Promise<import('./api').Collection>}
+   * @returns {Promise<import('./api').Collection | undefined>}
    */
   async getLogByUsername(username) {
     try {
@@ -36,13 +35,13 @@ class CollLogAPI {
   /**
    * Fetches 5 most recent items obtained by username.
    * @param {string} username
-   * @returns {Promise<import('./api').Item[]>}
+   * @returns {Promise<import('./api').UsersRecentDrops | undefined>}
    */
   async getRecentObtains(username) {
     try {
       const { data } = await axios.get(`${this.url}/items/recent/${username}`)
 
-      return data.items
+      return data
     } catch (error) {
       console.error(
         `No recent items found for ${username}, Error: ${error.message}`
@@ -51,52 +50,47 @@ class CollLogAPI {
   }
 
   /**
+   * Fetches last 5 items obtained for all users.
+   * @returns {Promise<import('./api').UsersRecentDrops[] | undefined>}
+   */
+  async getRecentObtainsForAllUsers() {
+    const promises = this.users.map(async (user) => this.getRecentObtains(user))
+
+    return Promise.all(promises)
+  }
+
+  /**
+   *
+   * @returns {Promise<import('./api').Collection[]>}
+   */
+  async getLogsForAllUsers() {
+    const promises = this.users.map(async (user) => this.getLogByUsername(user))
+
+    return Promise.all(promises)
+  }
+
+  /**
    * Fetches all user's scores. Counts pets and sorts by total uniques obtained.
    * @returns {Promise<import('./api').BaseCollection[]>}
    */
   async fetchAllScores() {
-    const promises = this.users.map(async (user) => this.getLogByUsername(user))
-
-    const data = await Promise.all(promises)
+    const data = await this.getLogsForAllUsers()
 
     // Filter out any users that don't have a collection log setup
+    // Safety check, should never happen
     const filteredData = data.filter(Boolean)
 
-    // Add recent drops to each user
-    const withRecentDrops = await Promise.all(
-      filteredData.map(async (d) => {
-        const recentDrops = await this.getRecentObtains(d.username)
-
-        // Filter out any items that have a quantity greater than 1
-        // and are older than 1 week.
-        const recentUniques =
-          recentDrops?.filter(({ quantity, obtainedAt }) => {
-            const weekAgo = dayjs().subtract(7, 'day')
-            return quantity === 1 && dayjs(obtainedAt).isSameOrAfter(weekAgo)
-          }) || []
-
-        return { ...d, recentDrops: recentUniques }
-      })
-    )
-
     // Add pet, drop count calcs to each user
-    const withCalculations = withRecentDrops.map(
-      ({
-        username,
-        uniqueItems,
-        uniqueObtained,
-        tabs,
-        accountType,
-        recentDrops,
-      }) => ({
-        username,
+    const withCalculations = filteredData.map(
+      ({ username, uniqueItems, uniqueObtained, tabs, accountType }) => ({
+        username: username.toLowerCase(),
+        displayName: username,
         uniqueItems,
         uniqueObtained,
         accountType,
         petCount: tabs.Other['All Pets'].items.filter(
           (petItem) => petItem.quantity > 0
         ).length,
-        recentDropCount: recentDrops?.length || 0,
       })
     )
 

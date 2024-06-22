@@ -1,4 +1,4 @@
-type Item = {
+export type Item = {
   /**
    * Game item ID
    */
@@ -23,6 +23,12 @@ type Item = {
    * The natural index the item appears in the collection log
    */
   sequence?: number
+}
+
+export type UsersRecentDrops = {
+  username: string
+  accountType: string
+  items: Item[]
 }
 
 export interface Collection {
@@ -62,6 +68,14 @@ export interface Collection {
 }
 
 export interface BaseCollection extends Omit<Collection, 'tabs'> {
+  /**
+   * OSRS username in lowercase
+   */
+  username: string
+  /**
+   * True OSRS username
+   */
+  displayName: string
   /**
    * The total number of pets obtained
    */

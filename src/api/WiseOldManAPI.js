@@ -1,5 +1,8 @@
 import axios from 'axios'
 
+/**
+ * https://docs.wiseoldman.net/
+ */
 class WiseOldManAPI {
   constructor() {
     this.url = 'https://api.wiseoldman.net/v2'

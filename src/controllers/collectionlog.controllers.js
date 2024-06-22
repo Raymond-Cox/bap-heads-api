@@ -1,13 +1,5 @@
-import CollLogAPI from '../api/CollLogAPI.js'
-import WiseOldManAPI from '../api/WiseOldManAPI.js'
+import User from '../models/User.model.js'
 
-export const fetchUsersAndScores = async () => {
-  // Fetch all clan members
-  const members = await WiseOldManAPI.getClanMembers()
-
-  // Get collection log data for all clan members
-  const collLogAPI = new CollLogAPI(members)
-  const results = await collLogAPI.fetchAllScores()
-
-  return results
+export const fetchUsersScores = async () => {
+  return User.find({})
 }
