@@ -14,6 +14,12 @@ export const verify = async () => {
     const members = await WiseOldManAPI.getClanMembers()
     console.log(`[CRON] ${members.length} Members fetched`)
 
+    // Delete users that are not in the clan anymore
+    const { deletedCount } = await User.deleteMany({
+      username: { $nin: members },
+    })
+    console.log(`[CRON] ${deletedCount} Members deleted from the database`)
+
     // Collect users who already exist in the database
     const existingUsers = await User.find({ username: { $in: members } })
     console.log(
