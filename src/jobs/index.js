@@ -15,6 +15,7 @@ export const setupCronJobs = () => {
     cron.schedule(CRONS.daily, verify)
     cron.schedule(CRONS.hourly, cacheCollLogs)
     cron.schedule(CRONS.weekly, snapshot)
+    console.log('Production crons scheduled')
   }
 
   // Add crons that are safe to run for dev & prod below
