@@ -34,6 +34,10 @@ const userSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
+  lastCheckpointRankIndex: {
+    type: Number,
+    default: 0,
+  },
 })
 
 const User = mongoose.model('User', userSchema)

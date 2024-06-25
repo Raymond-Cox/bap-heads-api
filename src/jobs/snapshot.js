@@ -7,14 +7,19 @@ export const snapshot = async () => {
   console.log('[CRON] Updating snapshots')
 
   try {
-    const users = await User.find({})
+    const users = await User.find({}, undefined, {
+      sort: { uniqueObtained: -1 },
+    })
 
-    const updates = users.map(async (user) => {
+    const updates = users.map(async (user, index) => {
       const { uniqueObtained } = user
 
       return User.updateOne(
         { username: user.username },
-        { lastCheckpointUniqueObtained: uniqueObtained }
+        {
+          lastCheckpointUniqueObtained: uniqueObtained,
+          lastCheckpointRankIndex: index,
+        }
       )
     })
 
