@@ -1,9 +1,26 @@
-import User from '../models/User.model.js'
+import BapPoints from '../models/BapPoints.model.js'
 
 /**
- * Updates the BAP points of a user
- * @param {{username: string, points: number}} param0 - The user's username and points
+ * Fetches users BAP points, sorted by total
  */
-export const updatePoints = async ({ username, points }) => {
-  return User.updateOne({ username }, { bapPoints: points })
+export const getPoints = async (params = {}) => {
+  return BapPoints.find(params, undefined, { sort: { total: -1 } })
+}
+/**
+ * Updates the BAP points of a user
+ * @param {{username: string, total: number, skilling: number, minigamesClues: number, pvm: number}} param0 - The user's username and points
+ */
+export const updatePoints = async ({
+  username,
+  total,
+  skilling,
+  minigamesClues,
+  pvm,
+}) => {
+  console.log({ username, total, skilling, minigamesClues, pvm })
+  return BapPoints.findOneAndUpdate(
+    { username },
+    { username, displayName: username, total, skilling, minigamesClues, pvm },
+    { upsert: true, new: true }
+  )
 }

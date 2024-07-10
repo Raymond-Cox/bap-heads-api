@@ -1,16 +1,24 @@
 import { Router } from 'express'
-import { updatePoints } from '../controllers/bapPoints.controller.js'
+import { getPoints, updatePoints } from '../controllers/bapPoints.controller.js'
 
 const router = Router()
 
-router
-  .get('/', (_req, res) => {
-    res.send('Hello from the BAP Points route!')
-  })
-  .post('/add', async (req, res) => {
-    const results = await updatePoints(req.body)
+router.get('/', async (_req, res) => {
+  const results = await getPoints()
 
-    res.json(results)
-  })
+  res.json(results)
+})
+
+router.get('/:username', async (req, res) => {
+  const results = await getPoints({ username: req.params.username })
+
+  res.json(results)
+})
+
+router.post('/', async (req, res) => {
+  const results = await updatePoints(req.body)
+
+  res.json(results)
+})
 
 export default router
