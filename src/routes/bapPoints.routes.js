@@ -16,6 +16,9 @@ router.get('/:username', async (req, res) => {
 })
 
 router.post('/', async (req, res) => {
+  console.log('bapPoints POST')
+  console.log(req.body)
+  console.log(req)
   const results = await updatePoints(req.body)
 
   res.json(results)
