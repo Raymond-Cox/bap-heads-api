@@ -16,17 +16,9 @@ const userSchema = new mongoose.Schema({
   accountType: {
     type: String,
     required: false,
-    default: 'NORMAL',
-  },
-  uniqueItems: {
-    type: Number,
-    default: 0,
+    default: 'regular',
   },
   uniqueObtained: {
-    type: Number,
-    default: 0,
-  },
-  petCount: {
     type: Number,
     default: 0,
   },

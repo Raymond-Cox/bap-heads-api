@@ -31,6 +31,7 @@
   },
   "homepage": "https://github.com/Raymond-Cox/bap-heads-api#readme",
   "dependencies": {
+    "@wise-old-man/utils": "^3.3.8",
     "axios": "^1.7.2",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
