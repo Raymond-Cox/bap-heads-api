@@ -1,31 +1,24 @@
+import WiseOldManAPI from '../api/WiseOldManAPI.js'
 import User from '../models/User.model.js'
-import { chunkedGetClogs } from '../utils/utils.js'
 
 /**
- * Caches collection logs for all verified users
+ * Caches collection logs for all users with 500+ unique items
  */
 export const cacheCollLogs = async () => {
   console.log('[CRON] Caching collection logs')
   try {
-    const members = await User.find({}, ['username'])
-    const memberNames = members.map(({ username }) => username)
-
-    const results = await chunkedGetClogs(memberNames)
+    const clogData = await WiseOldManAPI.getClanClogs()
 
     console.log('[CRON] Collection logs cached')
-    console.log(results)
+    console.log(clogData)
 
-    const updates = results.map(({ username, ...rest }) => {
-      return User.updateOne({ username }, { ...rest })
+    const updates = clogData.map(({ username, ...rest }) => {
+      return User.findOneAndUpdate({ username }, { ...rest }, { upsert: true })
     })
 
     const updateResults = await Promise.all(updates)
 
-    const updateCount = updateResults.filter(
-      ({ modifiedCount }) => modifiedCount
-    ).length
-
-    console.log(`[CRON] Updated ${updateCount} users`)
+    console.log(`[CRON] Updated ${updateResults.length} users`)
   } catch (error) {
     console.error(`[CRON] Error caching collection logs: ${error.message}`)
   }

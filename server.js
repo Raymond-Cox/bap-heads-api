@@ -4,7 +4,6 @@ import mongoose from 'mongoose'
 import cors from 'cors'
 import collectionlogRouter from './src/routes/collectionlog.routes.js'
 import userRouter from './src/routes/users.routes.js'
-import bapPointsRouter from './src/routes/bapPoints.routes.js'
 import { setupCronJobs } from './src/jobs/index.js'
 
 const { MONGO_URL } = process.env
@@ -24,7 +23,6 @@ app.get('/', (_req, res) => {
 // Define the routers
 app.use('/collectionlog', collectionlogRouter)
 app.use('/users', userRouter)
-app.use('/bap-points', bapPointsRouter)
 
 // Start the server
 app.listen(port, run)
