@@ -77,6 +77,8 @@ class WiseOldManAPI {
   async getClanClogs() {
     await this._fetchPaginatedClog()
 
+    const found = this._data.find((d) => d.username === 'coleyo')
+    console.log('FOUND', found)
     return this._data.filter((d) => d.uniqueObtained !== -1)
   }
 }
